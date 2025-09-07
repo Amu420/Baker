@@ -1,0 +1,23 @@
+{
+  "type": "module",
+  "name": "prooject",
+  "version": "1.0.0",
+  "description": "��#\u0000 \u0000A\u0000u\u0000t\u0000h\u0000-\u0000S\u0000y\u0000s\u0000t\u0000e\u0000m\u0000\r\u0000 \u0000",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "bcryptjs": "^3.0.2",
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.18.0",
+    "nodemon": "^3.1.10"
+  }
+}

@@ -1,0 +1,121 @@
+/* Full screen container with gradient background */
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Full height */
+  width: 100vw;  /* Full width */
+  background: linear-gradient(135deg, #667eea, #764ba2); /* modern gradient */
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  overflow: hidden;
+}
+
+/* Glass-style form card */
+.login-form {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 16px;
+  padding: 40px 30px;
+  width: 350px;
+  max-width: 90%;
+  text-align: center;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+  color: #fff;
+}
+
+/* Heading */
+.login-form h2 {
+  margin-bottom: 25px;
+  font-size: 28px;
+  font-weight: 700;
+  color: #fff;
+  text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+/* Input fields */
+.login-form input {
+  width: 90%;
+  padding: 14px 12px;
+  margin: 12px 0;
+  border: none;
+  border-radius: 8px;
+  font-size: 15px;
+  outline: none;
+  transition: all 0.3s ease;
+  background: rgba(255, 255, 255, 0.2);
+  color: #fff;
+}
+
+.login-form input::placeholder {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.login-form input:focus {
+  background: rgba(255, 255, 255, 0.35);
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
+/* Buttons */
+.login-form button {
+  width: 100%;
+  padding: 14px;
+  margin-top: 15px;
+  border: none;
+  border-radius: 8px;
+  background: #ff7e5f;
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.login-form button:hover {
+  background: #eb6750;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Sign Up button (different color) */
+.signup-btn {
+  background: #43cea2;
+}
+
+.signup-btn:hover {
+  background: #2fbf88;
+}
+
+/* Optional text link */
+.login-form p {
+  margin-top: 20px;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.login-form .toggle-link {
+  color: #ffd700;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.login-form .toggle-link:hover {
+  text-decoration: underline;
+}
+
+/* Responsive for smaller screens */
+@media screen and (max-width: 400px) {
+  .login-form {
+    padding: 30px 20px;
+    width: 90%;
+  }
+
+  .login-form h2 {
+    font-size: 24px;
+  }
+
+  .login-form input, .login-form button {
+    font-size: 14px;
+    padding: 12px;
+  }
+}
