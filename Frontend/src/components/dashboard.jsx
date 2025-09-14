@@ -4,10 +4,25 @@ import 'bootstrap/dist/js/bootstrap.bundle.min';
 
 
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import "./dashboard.css";
 import { getProducts } from "../services/productService";
 
 function Dashboard() {
+  const navigate = useNavigate();
+  // Logout handler
+  const handleLogout = async () => {
+    try {
+      await fetch("http://localhost:3000/api/logout", {
+        method: "POST",
+        credentials: "include"
+      });
+      // Optionally clear any local storage/session storage here
+      navigate("/login");
+    } catch (err) {
+      alert("Logout failed");
+    }
+  };
   const [productsData, setProductsData] = useState([]);   // store products
   const [loading, setLoading] = useState(true);           // for loader
   const [error, setError] = useState(null);               // for errors
@@ -47,12 +62,13 @@ function Dashboard() {
           </button>
 
           <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
-            <div className="navbar-nav ms-auto">
+            <div className="navbar-nav ms-auto align-items-center">
               <a className="nav-link active" href="#">Home</a>
               <a className="nav-link" href="#products">Products</a>
               <a className="nav-link" href="#about">About</a>
               <a className="nav-link" href="#services">Services</a>
               <a className="nav-link" href="#contact">Contact</a>
+              <button className="btn btn-danger ms-3" onClick={handleLogout}>Logout</button>
             </div>
           </div>
         </div>
