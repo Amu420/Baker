@@ -2,18 +2,46 @@ import '@fortawesome/fontawesome-free/css/all.min.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
 
-import React from "react";
+
+import React, { useState, useEffect } from "react";
 import "./dashboard.css";
-import productsData from "./products"; // adjust the path if needed
-import ProductCard from "./ProductCard"; // adjust the path if needed
+import { getProducts } from "../services/productService";
 
 function Dashboard() {
+  const [productsData, setProductsData] = useState([]);   // store products
+  const [loading, setLoading] = useState(true);           // for loader
+  const [error, setError] = useState(null);               // for errors
+  const [selectedCategory, setSelectedCategory] = useState('All');
+
+  // Fetch products from backend using productService
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const data = await getProducts();
+        setProductsData(data);
+      } catch (err) {
+        setError("Failed to load products");
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchProducts();
+  }, []);
+
+  // Get unique categories
+  const categories = ['All', ...Array.from(new Set(productsData.map(p => p.category)))];
+
+  // Filter products by selected category
+  const filteredProducts = selectedCategory === 'All'
+    ? productsData
+    : productsData.filter(p => p.category === selectedCategory);
+
   return (
     <div className="dashboard-page">
       {/* Navbar */}
       <nav className="navbar navbar-expand-lg bg-dark navbar-dark fixed-top shadow-sm">
         <div className="container">
-          <a className="navbar-brand logo" href="#">Bakers Bliss</a>
+          <a className="navbar-brand logo me-auto" href="#">Bakers Bliss</a>
           <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup">
             <span className="navbar-toggler-icon"></span>
           </button>
@@ -41,84 +69,48 @@ function Dashboard() {
         </div>
       </header>
 
-      {/* About Bakery */}
-      <section id="about" className="container-fluid about-bakery py-5">
-        <div className="row gy-5">
-          <div className="col-lg-3">
-            <div className="bakery-card">
-              <i className="fa-solid fa-shield bakery-card-icons"></i>
-              <p>Years Experience</p>
-              <h2>50</h2>
-            </div>
-          </div>
-          <div className="col-lg-3">
-            <div className="bakery-card">
-              <i className="fa-solid fa-user-tie bakery-card-icons"></i>
-              <p>Skilled Professionals</p>
-              <h2>175</h2>
-            </div>
-          </div>
-          <div className="col-lg-3">
-            <div className="bakery-card">
-              <i className="fa-solid fa-bread-slice bakery-card-icons"></i>
-              <p>Total Products</p>
-              <h2>135</h2>
-            </div>
-          </div>
-          <div className="col-lg-3">
-            <div className="bakery-card">
-              <i className="fa-solid fa-cart-plus bakery-card-icons"></i>
-              <p>Orders Everyday</p>
-              <h2>9357</h2>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Call Us */}
-      <section className="call-us container-fluid text-center py-5">
-        <div className="row">
-          <div className="col-lg-6">
-            <h3>The best bakery in <br /> your city</h3>
-          </div>
-          <div className="col-lg-6">
-            <h3>Call Us <br /> +0123456789</h3>
-          </div>
-        </div>
-      </section>
-
-
-
-
       {/* Products Section */}
-<section id="products" className="container-fluid py-5">
-  {productsData.map((category, index) => (
-    <div key={index}>
-      <h2 className="text-center mb-4">{category.category}</h2>
-      <div className="row gy-5">
-        {category.items.map((product, i) => (
-          <div key={i} className="col-lg-3 col-md-6">
-            <div className="card-product">
-              <h5>{product.name}</h5>
-              <p>Price: ₹{product.price}</p>
-              <p>Weight: {product.weight}</p>
-              <img src={product.img} alt={product.name} className="img-fluid" />
-              <button className="btn btn-dark mt-3">Add To Cart</button>
-            </div>
+      <section id="products" className="container-fluid py-5">
+        {/* Category Buttons */}
+        <div className="mb-4 text-center">
+          {categories.map((cat) => (
+            <button
+              key={cat}
+              className={`btn btn-outline-light mx-1 mb-2${selectedCategory === cat ? ' active' : ''}`}
+              onClick={() => setSelectedCategory(cat)}
+            >
+              {cat}
+            </button>
+          ))}
+        </div>
+        {loading ? (
+          <h3 className="text-center">Loading products...</h3>
+        ) : error ? (
+          <h3 className="text-center text-danger">{error}</h3>
+        ) : filteredProducts.length === 0 ? (
+          <h3 className="text-center">No products found.</h3>
+        ) : (
+          <div className="row gy-5">
+            {filteredProducts.map((product, i) => (
+              <div key={i} className="col-lg-3 col-md-6">
+                <div className="card-product">
+                  <h5>{product.name}</h5>
+                  <p>Price: ₹{product.price}</p>
+                  <p>Weight: {product.weight}</p>
+                  <img src={`http://localhost:3000/${product.image}`} alt={product.name} className="img-fluid" />
+                  <button className="btn btn-dark mt-3">Add To Cart</button>
+                </div>
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
-    </div>
-  ))}
-</section>
-
-
-      
+        )}
+      </section>
 
       {/* Footer */}
       <footer id="contact" className="bg-dark text-white text-center py-4 mt-5">
         <p>© {new Date().getFullYear()} Bakers Bliss. All Rights Reserved.</p>
-        <p>Follow us: 
+        <p>
+          Follow us: 
           <a href="#" className="text-white ms-2"><i className="fab fa-facebook"></i></a>
           <a href="#" className="text-white ms-2"><i className="fab fa-instagram"></i></a>
           <a href="#" className="text-white ms-2"><i className="fab fa-twitter"></i></a>
